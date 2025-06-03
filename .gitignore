@@ -1,0 +1,17 @@
+# Angular
+/node_modules
+/dist
+.angular
+
+# Env files
+.env
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
