@@ -31,10 +31,13 @@ export class CitaListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    let citasCargadas = false;
+    let medicosCargados = false;
     this.citaService.getCitas().subscribe({
       next: (citas) => {
         this.citas = citas;
-        this.isLoading = false;
+        citasCargadas = true;
+        if (medicosCargados) this.isLoading = false;
       },
       error: () => {
         this.error = 'Error al cargar citas';
@@ -42,12 +45,21 @@ export class CitaListComponent implements OnInit {
       }
     });
     this.medicoService.getMedicos().subscribe({
-      next: (medicos) => this.medicos = medicos
+      next: (medicos) => {
+        this.medicos = medicos;
+        medicosCargados = true;
+        if (citasCargadas) this.isLoading = false;
+      },
+      error: () => {
+        this.error = 'Error al cargar médicos';
+        this.isLoading = false;
+      }
     });
   }
 
   getMedicoNombre(id: number): string {
-    return this.medicos.find(m => m.id === id)?.nombre || '';
+    const medico = this.medicos.find(m => m.id === Number(id));
+    return medico ? medico.nombre : '(Médico no encontrado)';
   }
 
   get filteredCitas(): Cita[] {

@@ -48,7 +48,11 @@ export class CitaFormComponent implements OnInit {
         this.citaForm.reset();
       },
       error: (err) => {
-        this.error = err.message || 'Error al registrar cita';
+        if (err.message && err.message.includes('Ya existe una cita')) {
+          this.error = 'Horario no disponible';
+        } else {
+          this.error = err.message || 'Error al registrar cita';
+        }
       }
     });
   }

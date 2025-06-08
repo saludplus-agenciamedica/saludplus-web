@@ -22,12 +22,14 @@
         <tr *ngFor="let hora of horas">
           <td>{{ hora }}</td>
           <td *ngFor="let fecha of fechas">
-            <span *ngIf="isReservada(fecha, hora, selectedMedicoId!)" class="reservada">
-              Reservada ({{ getPaciente(fecha, hora, selectedMedicoId!) }})
-            </span>
-            <span *ngIf="!isReservada(fecha, hora, selectedMedicoId!)" class="disponible">
-              Disponible
-            </span>
+            <ng-container *ngIf="!isReservada(fecha, hora, selectedMedicoId!); else reservada">
+              <button class="disponible" (click)="seleccionarHorario(fecha, hora)">Disponible</button>
+            </ng-container>
+            <ng-template #reservada>
+              <span class="reservada" [title]="getPaciente(fecha, hora, selectedMedicoId!)">
+                Reservada ({{ getPaciente(fecha, hora, selectedMedicoId!) }})
+              </span>
+            </ng-template>
           </td>
         </tr>
       </tbody>
