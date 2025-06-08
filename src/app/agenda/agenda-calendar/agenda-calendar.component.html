@@ -1,7 +1,7 @@
 <p>agenda-calendar works!</p>
 <div class="container">
   <h2>Calendario de Agenda Médica</h2>
-  <div>
+  <div style="margin-bottom: 1rem;">
     <label>Médico:</label>
     <select [(ngModel)]="selectedMedicoId">
       <option [ngValue]="null">Seleccione un médico</option>
@@ -9,6 +9,8 @@
         {{ medico.nombre }} - {{ medico.especialidad }}
       </option>
     </select>
+    <label style="margin-left: 1.5rem;">Semana a mostrar:</label>
+    <input type="date" [(ngModel)]="today" (change)="generarFechas()" />
   </div>
   <div *ngIf="selectedMedicoId">
     <table class="calendar-table">
@@ -22,12 +24,14 @@
         <tr *ngFor="let hora of horas">
           <td>{{ hora }}</td>
           <td *ngFor="let fecha of fechas">
-            <span *ngIf="isReservada(fecha, hora, selectedMedicoId!)" class="reservada">
-              Reservada ({{ getPaciente(fecha, hora, selectedMedicoId!) }})
-            </span>
-            <span *ngIf="!isReservada(fecha, hora, selectedMedicoId!)" class="disponible">
-              Disponible
-            </span>
+            <ng-container *ngIf="!isReservada(fecha, hora, selectedMedicoId!); else reservada">
+              <button class="disponible" (click)="seleccionarHorario(fecha, hora)">Disponible</button>
+            </ng-container>
+            <ng-template #reservada>
+              <span class="reservada" [title]="getPaciente(fecha, hora, selectedMedicoId!)">
+                Reservada ({{ getPaciente(fecha, hora, selectedMedicoId!) }})
+              </span>
+            </ng-template>
           </td>
         </tr>
       </tbody>

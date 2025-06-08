@@ -3,13 +3,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { CitaService } from '../../shared/services/cita.service';
 import { MedicoService } from '../../shared/services/medico.service';
-import { Cita } from '../../shared/models/cita.model';|
+import { Cita } from '../../shared/models/cita.model';
 import { Medico } from '../../shared/models/medico.model';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-agenda-calendar',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Agrega FormsModule para ngModel
+  imports: [CommonModule, FormsModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatNativeDateModule], // Agrega FormsModule para ngModel
   templateUrl: './agenda-calendar.component.html',
   styleUrls: ['./agenda-calendar.component.css']
 })
@@ -49,5 +54,11 @@ export class AgendaCalendarComponent implements OnInit {
   getPaciente(fecha: string, hora: string, medicoId: number): string {
     const cita = this.citas.find(c => c.fecha === fecha && c.hora === hora && c.medicoId === medicoId && c.estado !== 'Cancelada');
     return cita ? cita.paciente : '';
+  }
+
+  seleccionarHorario(fecha: string, hora: string) {
+    // Aquí podrías emitir un evento, navegar o guardar la selección para usarla en el formulario de cita
+    alert(`Horario seleccionado: ${fecha} a las ${hora}`);
+    // O puedes implementar lógica para comunicar este horario al formulario de cita
   }
 }
