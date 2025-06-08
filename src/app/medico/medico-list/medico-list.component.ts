@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MedicoService } from '../../shared/services/medico.service';
 import { Medico } from '../../shared/models/medico.model';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { FechaCortaPipe } from '../../shared/fecha-corta.pipe';
 
 @Component({
   selector: 'app-medico-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatCardModule, MatListModule, FechaCortaPipe],
   templateUrl: './medico-list.component.html',
   styleUrls: ['./medico-list.component.css']
 })

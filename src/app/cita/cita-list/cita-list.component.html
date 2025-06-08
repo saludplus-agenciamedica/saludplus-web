@@ -7,21 +7,39 @@
       <strong>Citas esta semana:</strong> {{ citasSemana }}<br>
       <strong>Citas este mes:</strong> {{ citasMes }}
     </div>
-    <div style="margin-bottom: 1rem;">
-      <input placeholder="Buscar por paciente" [(ngModel)]="filtro" />
-      <input placeholder="Buscar por médico" [(ngModel)]="filtroMedico" />
-      <select [(ngModel)]="filtroEstado">
-        <option value="">Todos los estados</option>
-        <option value="Confirmada">Confirmada</option>
-        <option value="Realizada">Realizada</option>
-        <option value="Cancelada">Cancelada</option>
-      </select>
-      <select [(ngModel)]="filtroEspecialidad">
-        <option value="">Todas las especialidades</option>
-        <option *ngFor="let esp of especialidadesUnicas()" [value]="esp">{{ esp }}</option>
-      </select>
-      <input type="date" [(ngModel)]="fechaInicio" />
-      <input type="date" [(ngModel)]="fechaFin" />
+    <div style="margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 1.2rem; align-items: center;">
+      <div style="display: flex; align-items: center; gap: 0.3rem;">
+        <label>Paciente:</label>
+        <input placeholder="Buscar por paciente" [(ngModel)]="filtro" />
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.3rem;">
+        <label>Médico:</label>
+        <input placeholder="Buscar por médico" [(ngModel)]="filtroMedico" />
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.3rem;">
+        <label>Estado:</label>
+        <select [(ngModel)]="filtroEstado">
+          <option value="">Todos los estados</option>
+          <option value="Confirmada">Confirmada</option>
+          <option value="Realizada">Realizada</option>
+          <option value="Cancelada">Cancelada</option>
+        </select>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.3rem;">
+        <label>Especialidad:</label>
+        <select [(ngModel)]="filtroEspecialidad">
+          <option value="">Todas las especialidades</option>
+          <option *ngFor="let esp of especialidadesUnicas()" [value]="esp">{{ esp }}</option>
+        </select>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.3rem;">
+        <label>Fecha inicio:</label>
+        <input type="date" [(ngModel)]="fechaInicio" />
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.3rem;">
+        <label>Fecha fin:</label>
+        <input type="date" [(ngModel)]="fechaFin" />
+      </div>
     </div>
     <table *ngIf="filteredCitas.length">
       <thead>
@@ -37,7 +55,7 @@
         <tr *ngFor="let cita of filteredCitas" [class.proxima]="isCitaProxima(cita)">
           <td>{{ cita.paciente }}</td>
           <td>{{ getMedicoNombre(cita.medicoId) }}</td>
-          <td>{{ cita.fecha }}</td>
+          <td>{{ cita.fecha | fechaCorta }}</td>
           <td>{{ cita.hora }}</td>
           <td>{{ cita.estado }}
             <span *ngIf="isCitaProxima(cita)" class="alerta">¡Próxima!</span>
