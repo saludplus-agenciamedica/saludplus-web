@@ -1,1 +1,87 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+  background: #e6f7fa;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  color: #222;
+}
+
+nav {
+  background: #00bcd4;
+  padding: 1rem 0;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  margin: 0 1.5rem;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+}
+nav a.active, nav a:hover {
+  color: #004d60;
+  border-bottom: 2px solid #004d60;
+}
+
+.container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,188,212,0.08);
+  padding: 2rem 2.5rem;
+  max-width: 700px;
+  margin: 2rem auto;
+}
+h1, h2 {
+  color: #00bcd4;
+  margin-bottom: 1.5rem;
+}
+button, input, select {
+  border-radius: 6px;
+  border: 1px solid #b2ebf2;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+button {
+  background: #00bcd4;
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover {
+  background: #0097a7;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  background: #fff;
+}
+th, td {
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #e0f7fa;
+  text-align: left;
+}
+th {
+  background: #b2ebf2;
+  color: #004d60;
+}
+tr:last-child td {
+  border-bottom: none;
+}
+input[type="date"], input[type="time"] {
+  min-width: 120px;
+}
+.error {
+  color: #e53935;
+  font-weight: 500;
+}
+.success {
+  color: #43a047;
+  font-weight: 500;
+}

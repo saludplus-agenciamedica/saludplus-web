@@ -1,0 +1,50 @@
+<div class="container">
+  <h2>Historial de Citas</h2>
+  <div *ngIf="isLoading">Cargando historial de citas...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <div *ngIf="!isLoading && !error">
+    <div style="margin-bottom: 1rem;">
+      <strong>Citas esta semana:</strong> {{ citasSemana }}<br>
+      <strong>Citas este mes:</strong> {{ citasMes }}
+    </div>
+    <div style="margin-bottom: 1rem;">
+      <input placeholder="Buscar por paciente" [(ngModel)]="filtro" />
+      <input placeholder="Buscar por médico" [(ngModel)]="filtroMedico" />
+      <select [(ngModel)]="filtroEstado">
+        <option value="">Todos los estados</option>
+        <option value="Confirmada">Confirmada</option>
+        <option value="Realizada">Realizada</option>
+        <option value="Cancelada">Cancelada</option>
+      </select>
+      <select [(ngModel)]="filtroEspecialidad">
+        <option value="">Todas las especialidades</option>
+        <option *ngFor="let esp of especialidadesUnicas()" [value]="esp">{{ esp }}</option>
+      </select>
+      <input type="date" [(ngModel)]="fechaInicio" />
+      <input type="date" [(ngModel)]="fechaFin" />
+    </div>
+    <table *ngIf="filteredCitas.length">
+      <thead>
+        <tr>
+          <th>Paciente</th>
+          <th>Médico</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cita of filteredCitas" [class.proxima]="isCitaProxima(cita)">
+          <td>{{ cita.paciente }}</td>
+          <td>{{ getMedicoNombre(cita.medicoId) }}</td>
+          <td>{{ cita.fecha }}</td>
+          <td>{{ cita.hora }}</td>
+          <td>{{ cita.estado }}
+            <span *ngIf="isCitaProxima(cita)" class="alerta">¡Próxima!</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!filteredCitas.length">No hay citas registradas.</div>
+  </div>
+</div>

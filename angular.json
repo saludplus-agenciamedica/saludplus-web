@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "saludplus": {
+    "Solemne_2_Tecs_Web": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/saludplus",
+            "outputPath": "dist/solemne-2-tecs-web",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "saludplus:build:production"
+              "buildTarget": "Solemne_2_Tecs_Web:build:production"
             },
             "development": {
-              "buildTarget": "saludplus:build:development"
+              "buildTarget": "Solemne_2_Tecs_Web:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -99,6 +99,6 @@
     }
   },
   "cli": {
-    "analytics": "6adedb9b-72c7-4bb2-9301-21b973637c2d"
+    "analytics": "1df319ad-1a48-451d-9661-26e6c89f4780"
   }
 }
