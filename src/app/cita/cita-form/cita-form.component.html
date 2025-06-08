@@ -1,29 +1,31 @@
 <div class="container">
   <h2>Registrar Cita Médica</h2>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <div *ngIf="success" class="success">{{ success }}</div>
   <form [formGroup]="citaForm" (ngSubmit)="registrarCita()">
-    <div>
-      <label>Paciente:</label><br />
-      <input formControlName="paciente" />
-    </div>
-    <div>
-      <label>Médico:</label><br />
-      <select formControlName="medicoId">
-        <option value="" disabled selected>Seleccione un médico</option>
-        <option *ngFor="let medico of medicos" [value]="medico.id">
+    <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 1rem;">
+      <mat-label>Paciente</mat-label>
+      <input matInput formControlName="paciente" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 1rem;">
+      <mat-label>Médico</mat-label>
+      <mat-select formControlName="medicoId">
+        <mat-option value="" disabled>Seleccione un médico</mat-option>
+        <mat-option *ngFor="let medico of medicos" [value]="medico.id">
           {{ medico.nombre }} - {{ medico.especialidad }}
-        </option>
-      </select>
-    </div>
-    <div>
-      <label>Fecha:</label><br />
-      <input type="date" formControlName="fecha" />
-    </div>
-    <div>
-      <label>Hora:</label><br />
-      <input type="time" formControlName="hora" />
-    </div>
-    <button type="submit" [disabled]="citaForm.invalid">Registrar Cita</button>
-    <div *ngIf="error" class="error">{{ error }}</div>
-    <div *ngIf="success" class="success">{{ success }}</div>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 1rem;">
+      <mat-label>Fecha</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="fecha" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 1rem;">
+      <mat-label>Hora</mat-label>
+      <input matInput type="time" formControlName="hora" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" [disabled]="citaForm.invalid">Registrar Cita</button>
   </form>
 </div>

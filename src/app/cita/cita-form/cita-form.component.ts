@@ -5,11 +5,17 @@ import { CitaService } from '../../shared/services/cita.service';
 import { MedicoService } from '../../shared/services/medico.service';
 import { Cita } from '../../shared/models/cita.model';
 import { Medico } from '../../shared/models/medico.model';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-cita-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatDatepickerModule, MatNativeDateModule],
   templateUrl: './cita-form.component.html',
   styleUrls: ['./cita-form.component.css']
 })
@@ -42,7 +48,12 @@ export class CitaFormComponent implements OnInit {
     this.error = null;
     this.success = null;
     if (this.citaForm.invalid) return;
-    this.citaService.registrarCita(this.citaForm.value).subscribe({
+    // Normalizar la fecha a yyyy-MM-dd si viene como Date
+    const formValue = { ...this.citaForm.value };
+    if (formValue.fecha instanceof Date) {
+      formValue.fecha = formValue.fecha.toISOString().slice(0, 10);
+    }
+    this.citaService.registrarCita(formValue).subscribe({
       next: () => {
         this.success = 'Cita registrada correctamente';
         this.citaForm.reset();

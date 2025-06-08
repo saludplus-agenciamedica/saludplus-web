@@ -5,11 +5,16 @@ import { CitaService } from '../../shared/services/cita.service';
 import { MedicoService } from '../../shared/services/medico.service';
 import { Cita } from '../../shared/models/cita.model';
 import { Medico } from '../../shared/models/medico.model';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-agenda-calendar',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Agrega FormsModule para ngModel
+  imports: [CommonModule, FormsModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatNativeDateModule], // Agrega FormsModule para ngModel
   templateUrl: './agenda-calendar.component.html',
   styleUrls: ['./agenda-calendar.component.css']
 })

@@ -5,11 +5,17 @@ import { CitaService } from '../../shared/services/cita.service';
 import { MedicoService } from '../../shared/services/medico.service';
 import { Cita } from '../../shared/models/cita.model';
 import { Medico } from '../../shared/models/medico.model';
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { FechaCortaPipe } from '../../shared/fecha-corta.pipe';
 
 @Component({
   selector: 'app-cita-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatTableModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatButtonModule, FechaCortaPipe],
   templateUrl: './cita-list.component.html',
   styleUrls: ['./cita-list.component.css']
 })

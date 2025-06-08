@@ -1,7 +1,7 @@
 <p>agenda-calendar works!</p>
 <div class="container">
   <h2>Calendario de Agenda Médica</h2>
-  <div>
+  <div style="margin-bottom: 1rem;">
     <label>Médico:</label>
     <select [(ngModel)]="selectedMedicoId">
       <option [ngValue]="null">Seleccione un médico</option>
@@ -9,6 +9,8 @@
         {{ medico.nombre }} - {{ medico.especialidad }}
       </option>
     </select>
+    <label style="margin-left: 1.5rem;">Semana a mostrar:</label>
+    <input type="date" [(ngModel)]="today" (change)="generarFechas()" />
   </div>
   <div *ngIf="selectedMedicoId">
     <table class="calendar-table">
