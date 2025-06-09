@@ -1,59 +1,81 @@
 # Solemne2TecsWeb
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.8.
+Este proyecto es una aplicación Angular para la gestión de citas médicas.
 
-## Development server
+---
 
-To start a local development server, run:
+## Ejecución local (desarrollo)
 
-```bash
-ng serve
-```
+1. Instala las dependencias:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+   ```bash
+   npm install
+   ```
 
-## Code scaffolding
+2. Inicia el servidor de desarrollo:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+   ```bash
+   ng serve
+   ```
 
-```bash
-ng generate component component-name
-```
+3. Abre tu navegador en [http://localhost:4200](http://localhost:4200)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## Build de producción
 
-## Building
+1. Genera el build optimizado:
 
-To build the project run:
+   ```bash
+   ng build --configuration production
+   ```
 
-```bash
-ng build
-```
+   Los archivos generados estarán en `dist/saludplus/browser/`.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## Ejecución con Docker
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+1. Asegúrate de haber generado el build de producción:
+
+   ```bash
+   ng build --configuration production
+   ```
+
+2. Construye la imagen Docker:
+
+   ```powershell
+   docker build -t saludplus-web .
+   ```
+
+3. Ejecuta el contenedor:
+
+   ```powershell
+   docker run -p 80:80 saludplus-web
+   ```
+
+4. Accede a la app en [http://localhost](http://localhost)
+
+---
+
+## Pruebas unitarias
+
+Ejecuta los tests con:
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## Notas
 
-```bash
-ng e2e
-```
+- Requiere Node.js y Angular CLI instalados para desarrollo local.
+- Docker solo sirve archivos estáticos, no incluye backend.
+- Si tienes problemas con dependencias, ejecuta `npm install` nuevamente.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## Recursos adicionales
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli)
