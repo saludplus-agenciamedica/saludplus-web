@@ -89,6 +89,7 @@ def paciente_detail(request, pk):
         paciente.delete()
         return JsonResponse({'deleted': True})
 
+
 # CRUD para Cita
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
@@ -114,6 +115,35 @@ def cita_list_create(request):
             return JsonResponse(model_to_dict(cita), status=201)
         except (ValidationError, KeyError, Medico.DoesNotExist, Paciente.DoesNotExist) as e:
             return JsonResponse({'errors': str(e)}, status=400)
+
+# Consulta avanzada: filtrar/buscar citas por estado, fechas, prioridad, etc.
+@csrf_exempt
+@require_http_methods(["GET"])
+def cita_filtrar(request):
+    """
+    Permite filtrar citas por estado, fecha inicial/final, medico, paciente.
+    Ejemplo de uso:
+    /citas/filtrar/?estado=pendiente&fecha_inicio=2025-07-01&fecha_fin=2025-07-31&medico=1
+    """
+    qs = Cita.objects.all()
+    estado = request.GET.get('estado')
+    if estado:
+        qs = qs.filter(estado=estado)
+    fecha_inicio = request.GET.get('fecha_inicio')
+    if fecha_inicio:
+        qs = qs.filter(fecha__gte=fecha_inicio)
+    fecha_fin = request.GET.get('fecha_fin')
+    if fecha_fin:
+        qs = qs.filter(fecha__lte=fecha_fin)
+    medico = request.GET.get('medico')
+    if medico:
+        qs = qs.filter(medico_id=medico)
+    paciente = request.GET.get('paciente')
+    if paciente:
+        qs = qs.filter(paciente_id=paciente)
+    # Se puede agregar más filtros según necesidades (por ejemplo, por hora, por motivo, etc.)
+    citas = list(qs.values())
+    return JsonResponse(citas, safe=False)
 
 @csrf_exempt
 @require_http_methods(["GET", "PUT", "DELETE"])
