@@ -53,7 +53,37 @@ export class CitaFormComponent implements OnInit {
     if (formValue.fecha instanceof Date) {
       formValue.fecha = formValue.fecha.toISOString().slice(0, 10);
     }
-    this.citaService.registrarCita(formValue).subscribe({
+    // Normalizar hora a string HH:mm
+    if (formValue.hora instanceof Date) {
+      // Si hora es un objeto Date, extraer hora y minutos
+      const h = formValue.hora.getHours().toString().padStart(2, '0');
+      const m = formValue.hora.getMinutes().toString().padStart(2, '0');
+      formValue.hora = `${h}:${m}`;
+    } else if (typeof formValue.hora === 'string' && formValue.hora.length === 5) {
+      // Ya está en formato HH:mm
+    } else if (typeof formValue.hora === 'string' && formValue.hora.length === 8) {
+      // Si viene como HH:mm:ss, dejarlo igual
+    } else {
+      // Si viene en otro formato, intentar convertirlo
+      try {
+        const date = new Date(`1970-01-01T${formValue.hora}`);
+        const h = date.getHours().toString().padStart(2, '0');
+        const m = date.getMinutes().toString().padStart(2, '0');
+        formValue.hora = `${h}:${m}`;
+      } catch {}
+    }
+    // Cambiar medicoId a medico (el backend espera medico)
+    formValue.medico = formValue.medicoId;
+    delete formValue.medicoId;
+    // Enviar solo los campos requeridos
+    const citaPayload = {
+      paciente: formValue.paciente,
+      medico: formValue.medico,
+      fecha: formValue.fecha,
+      hora: formValue.hora,
+      motivo: formValue.motivo || ''
+    };
+    this.citaService.registrarCita(citaPayload).subscribe({
       next: () => {
         this.success = 'Cita registrada correctamente';
         this.citaForm.reset();
@@ -61,6 +91,8 @@ export class CitaFormComponent implements OnInit {
       error: (err) => {
         if (err.message && err.message.includes('Ya existe una cita')) {
           this.error = 'Horario no disponible';
+        } else if (err.error && err.error.errors) {
+          this.error = err.error.errors;
         } else {
           this.error = err.message || 'Error al registrar cita';
         }
