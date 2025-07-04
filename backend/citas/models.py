@@ -10,8 +10,8 @@ class Medico(models.Model):
         return f"{self.nombre} ({self.especialidad})"
 
 class Paciente(models.Model):
+
     nombre = models.CharField(max_length=100)
-    correo = models.EmailField(unique=True)
     telefono = models.CharField(max_length=20, blank=True)
 
     def __str__(self):

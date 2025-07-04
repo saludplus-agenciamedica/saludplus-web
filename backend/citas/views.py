@@ -24,6 +24,10 @@ def medico_list_create(request):
         return JsonResponse(medicos, safe=False)
     elif request.method == "POST":
         data = parse_json(request)
+        required_fields = ["nombre", "especialidad", "correo"]
+        missing = [f for f in required_fields if f not in data]
+        if missing:
+            return JsonResponse({'errors': f'Faltan campos obligatorios: {missing}'}, status=400)
         medico = Medico(**data)
         try:
             medico.full_clean()
@@ -95,13 +99,37 @@ def paciente_detail(request, pk):
 @require_http_methods(["GET", "POST"])
 def cita_list_create(request):
     if request.method == "GET":
-        citas = list(Cita.objects.all().values())
-        return JsonResponse(citas, safe=False)
+        # Devolver datos enriquecidos para el frontend
+        citas = Cita.objects.select_related('medico', 'paciente').all()
+        citas_list = []
+        for cita in citas:
+            citas_list.append({
+                'id': cita.id,
+                'paciente': cita.paciente.nombre,
+                'medicoId': cita.medico.id,
+                'medicoNombre': cita.medico.nombre,
+                'fecha': cita.fecha.strftime('%Y-%m-%d'),
+                'hora': cita.hora.strftime('%H:%M:%S'),
+                'estado': cita.estado,
+                'motivo': cita.motivo,
+            })
+        return JsonResponse(citas_list, safe=False)
     elif request.method == "POST":
         data = parse_json(request)
         try:
             medico = Medico.objects.get(pk=data['medico'])
-            paciente = Paciente.objects.get(pk=data['paciente'])
+            paciente_field = data['paciente']
+            paciente = None
+            # If paciente is an int, treat as ID; if string, treat as name
+            if isinstance(paciente_field, int) or (isinstance(paciente_field, str) and paciente_field.isdigit()):
+                paciente_id = int(paciente_field)
+                paciente = Paciente.objects.get(pk=paciente_id)
+            else:
+                # Try to find by name (case-insensitive)
+                paciente_nombre = paciente_field.strip()
+                paciente = Paciente.objects.filter(nombre__iexact=paciente_nombre).first()
+                if not paciente:
+                    paciente = Paciente.objects.create(nombre=paciente_nombre, telefono="")
             cita = Cita(
                 medico=medico,
                 paciente=paciente,
@@ -113,7 +141,7 @@ def cita_list_create(request):
             cita.full_clean()
             cita.save()
             return JsonResponse(model_to_dict(cita), status=201)
-        except (ValidationError, KeyError, Medico.DoesNotExist, Paciente.DoesNotExist) as e:
+        except (ValidationError, KeyError, Medico.DoesNotExist, Paciente.DoesNotExist, Exception) as e:
             return JsonResponse({'errors': str(e)}, status=400)
 
 # Consulta avanzada: filtrar/buscar citas por estado, fechas, prioridad, etc.
