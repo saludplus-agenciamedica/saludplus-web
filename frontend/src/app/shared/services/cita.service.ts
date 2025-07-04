@@ -5,7 +5,8 @@ import { Cita } from '../../shared/models/cita.model';
 
 @Injectable({ providedIn: 'root' })
 export class CitaService {
-  private apiUrl = 'http://localhost:8000/citas/';
+  // Cambia esta IP por la de tu servidor Docker en la red local
+  private apiUrl = 'http://192.168.1.100:8000/citas/';
 
   constructor(private http: HttpClient) {}
 
