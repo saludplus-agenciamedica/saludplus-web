@@ -1,9 +1,14 @@
-FROM httpd:2.4
+# Etapa 1: Build de Angular
+FROM node:18 AS build
 
-RUN rm -rf /usr/local/apache2/htdocs/*
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build -- --configuration production
 
-COPY dist/saludplus/browser/ /usr/local/apache2/htdocs/
-
+# Etapa 2: Servir con Nginx
+FROM nginx:alpine
+COPY --from=build /app/dist/saludplus/browser /usr/share/nginx/html
 EXPOSE 80
-
-CMD ["httpd-foreground"]
+CMD ["nginx", "-g", "daemon off;"]
